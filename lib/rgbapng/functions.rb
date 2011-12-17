@@ -6,6 +6,8 @@ require "base64"
 # Modified to use the ChunkyPNG library rather than RMagick, and added flexibility to amend the path
 # to which generated PNGs are saved.
 
+DEFAULT_SIZE = 8
+
 module Sass::Script::Functions
   
   def png_pixelate(c, dir = "rgbapng")
@@ -26,12 +28,12 @@ module Sass::Script::Functions
     Sass::Script::String.new(file)
   end
 
-  def png_base64(c)
+  def png_base64(c, width = Sass::Script::Number.new( DEFAULT_SIZE ), height = Sass::Script::Number.new( DEFAULT_SIZE ))
     color = ChunkyPNG::Color.rgba(c.red, c.green, c.blue, (c.alpha * 100 * 2.55).round)
-    image = ChunkyPNG::Image.new(1,1, color)
+    image = ChunkyPNG::Image.new(width.value, height.value, color)
     data  = Base64.encode64(image.to_blob).gsub("\n", "")
     
     Sass::Script::String.new("url('data:image/png;base64,#{data}')")
   end
-  
+  declare :png_base64, :args => [:c, :height, :width]
 end

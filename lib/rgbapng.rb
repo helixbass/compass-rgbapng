@@ -1,3 +1,6 @@
+$:.unshift File.dirname(__FILE__)
+
+require "compass"
 require "rgbapng/functions"
 
 Compass::Frameworks.register("rgbapng",

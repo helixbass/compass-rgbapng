@@ -1,8 +1,3 @@
-/*
-  Mixins are slightly modified from Benjamin Doherty's first implementations: http://gist.github.com/377912
-  rgba-background mixin can now be passed an option $dir variable
-*/
-
 $rgbapng_path: 'rgbapng';
 
 @mixin rgba-background($color, $dir:$rgbapng_path){
@@ -10,8 +5,27 @@ $rgbapng_path: 'rgbapng';
   background: $color;
 }
 
-@mixin rgba-background-inline($color){
-  background: png_base64($color);
+@mixin rgba-background-inline($color, $size:8){
+  $height: $size;
+  $width: $size;
+  @if type-of($size) == list {
+    $width: nth($size, 1);
+    $height: nth($size, 2);
+  }
+  background: png_base64($color, $width, $height);
   background: $color;
+  $filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#{ie-hex-str($color)}, endColorstr=#{ie-hex-str($color)});
+
+  .ie7 &, .ie6 & {
+    @include has-layout;
+    background: none;
+    filter: $filter;
+  }
+
+  .ie8 & {
+    @include has-layout;
+    background: none;
+    -ms-filter: quote($filter);
+  }
 }
 
