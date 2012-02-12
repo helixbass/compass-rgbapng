@@ -1,31 +1,25 @@
-$rgbapng_path: 'rgbapng';
+$rgbapng_path: 'rgbapng'
 
-@mixin rgba-background($color, $dir:$rgbapng_path){
-  background: image_url(png_pixelate($color, $dir));
-  background: $color;
-}
+=rgba-bg( $color, $dir: $rgbapng_path )
+    background: image_url( png_pixelate( $color, $dir ))
+    background: $color
 
-@mixin rgba-background-inline($color, $size:8){
-  $height: $size;
-  $width: $size;
-  @if type-of($size) == list {
-    $width: nth($size, 1);
-    $height: nth($size, 2);
-  }
-  background: png_base64($color, $width, $height);
-  background: $color;
-  $filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#{ie-hex-str($color)}, endColorstr=#{ie-hex-str($color)});
+=rgba-bg-inline( $color, $size: 8 )
+    $height: $size
+    $width: $size
+    @if type-of( $size ) == list
+        $width: nth( $size, 1 )
+        $height: nth ($size, 2 )
+    background: png_base64( $color, $width, $height )
+    background: $color
+    $filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#{ ie-hex-str( $color ) }, endColorstr=#{ ie-hex-str( $color ) })
 
-  .ie7 &, .ie6 & {
-    @include has-layout;
-    background: none;
-    filter: $filter;
-  }
+    .ie7 &, .ie6 &
+        +has-layout
+        background: none
+        filter: $filter
 
-  .ie8 & {
-    @include has-layout;
-    background: none;
-    -ms-filter: quote($filter);
-  }
-}
-
+    .ie8 &
+        +has-layout
+        background: none
+        -ms-filter: quote( $filter )
